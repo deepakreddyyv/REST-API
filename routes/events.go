@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"deepak.com/web_rest/models"
+	"deepak.com/web_rest/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -37,8 +38,23 @@ func getEvents(ctx *gin.Context) { //GET, POST, PUT, PATCH, DELETE
 }
 
 func createEvents(ctx *gin.Context) {
+
+	var token string = ctx.Request.Header.Get("Authorization")
+
+    if token == "" {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "user unauthorised"})
+		return 
+	}
+	
+	userId,  err := utils.Verify(token)
+
+	if err != nil {
+        ctx.JSON(http.StatusUnauthorized, err.Error())
+		return 
+	}
+
 	var events models.Events
-	err := ctx.ShouldBindJSON(&events) //binds the request object data with events
+	err = ctx.ShouldBindJSON(&events) //binds the request object data with events
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"Message": "Unable to parse the request"})
@@ -46,7 +62,7 @@ func createEvents(ctx *gin.Context) {
 	}
 
 	//events.Id = 1
-	events.UserId = 1
+	events.UserId = userId
 
 	err = events.Save()
 
@@ -105,23 +121,3 @@ func deleteEvents(ctx *gin.Context) {
 	ctx.JSON(http.StatusAccepted, gin.H{"message": "deleted the event.."})
 }
 
-func signUp(ctx *gin.Context) {
-	var user models.User
-
-	err := ctx.ShouldBindJSON(&user)
-
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-		return
-	}
-
-	err = user.Save()
-
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-		return
-	}
-
-	ctx.JSON(http.StatusCreated, gin.H{"message": "created user.."})
-
-}

@@ -1,5 +1,6 @@
 POST http://127.0.0.1:8080/events
 Content-Type: application/json
+Authorization: eJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlZXBha3JlZGR5MUBnbWFpbC5jb20iLCJleHAiOjE3Mjc4NzI5ODYsImlkIjoxfQ.fVEXFIyrUi060wUzPLNKHgTffE4kafdnlkO3E7y49AA
 
 {
     "name": "ColdPlay",

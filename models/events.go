@@ -15,7 +15,7 @@ type Events struct {
 	Description string    `bindings:"required"`
 	Location    string    `bindings:"required"`
 	EventDate   time.Time `bindings:"required"`
-	UserId      int
+	UserId      int64
 }
 
 func parseTime(dateByte []byte) (time.Time, error) {
