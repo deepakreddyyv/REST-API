@@ -1,1 +1,2 @@
-DELETE http://127.0.0.1:8080/events/4
+DELETE http://127.0.0.1:8080/events/3
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pa2VAZ21haWwuY29tIiwiZXhwIjoxNzI3OTYyMzIwLCJpZCI6Mn0.Cd99JRYy05yyZN_VahNYVeBd2ownSlZ5ZqHR3O9GxRQ

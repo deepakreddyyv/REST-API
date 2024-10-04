@@ -1,11 +1,11 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
 	"deepak.com/web_rest/models"
-	"deepak.com/web_rest/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -38,23 +38,8 @@ func getEvents(ctx *gin.Context) { //GET, POST, PUT, PATCH, DELETE
 }
 
 func createEvents(ctx *gin.Context) {
-
-	var token string = ctx.Request.Header.Get("Authorization")
-
-    if token == "" {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "user unauthorised"})
-		return 
-	}
-	
-	userId,  err := utils.Verify(token)
-
-	if err != nil {
-        ctx.JSON(http.StatusUnauthorized, err.Error())
-		return 
-	}
-
 	var events models.Events
-	err = ctx.ShouldBindJSON(&events) //binds the request object data with events
+	err := ctx.ShouldBindJSON(&events) //binds the request object data with events
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"Message": "Unable to parse the request"})
@@ -62,6 +47,7 @@ func createEvents(ctx *gin.Context) {
 	}
 
 	//events.Id = 1
+	userId := ctx.GetInt64("userId")
 	events.UserId = userId
 
 	err = events.Save()
@@ -80,6 +66,18 @@ func updateEvents(ctx *gin.Context) {
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid parameter"})
+		return
+	}
+
+	tokenUserId := ctx.GetInt64("userId")
+
+	fmt.Println(tokenUserId)
+
+	/* replace it with getEventsById */
+	uevents, err := models.GetEvents(id)
+
+	if err != nil || tokenUserId != uevents[0].UserId { //if user is unauthorized
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "user - unauthorized"})
 		return
 	}
 
@@ -111,6 +109,15 @@ func deleteEvents(ctx *gin.Context) {
 		return
 	}
 
+	tokenUserId := ctx.GetInt64("userId")
+	/* replace it with getEventsById */
+	uevents, err := models.GetEvents(id)
+
+	if err != nil || tokenUserId != uevents[0].UserId { //if user is unauthorized
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "user - unauthorized"})
+		return
+	}
+
 	err = models.DeleteEvents(id)
 
 	if err != nil {
@@ -120,4 +127,3 @@ func deleteEvents(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusAccepted, gin.H{"message": "deleted the event.."})
 }
-

@@ -125,3 +125,37 @@ func DeleteEvents(id int64) error {
 
 	return err
 }
+
+func (e *Events) RegisterEvent(userID int64) error {
+	insertQuery := "INSERT INTO REGISTRATIONS(user_id, event_id) values(?, ?)"
+
+	_, err := db.DB.Exec(insertQuery, userID, e.Id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
+func (e *Events) CancleRegistration(userId int64) (int64, error) {
+	cancleRegisteration := "DELETE FROM REGISTRATIONS WHERE USER_ID = ? and EVENT_ID = ?"
+    
+	res, err := db.DB.Exec(cancleRegisteration, userId, e.Id);
+    
+	if err != nil {
+		return -1, err 
+	}
+	rowsEff, err := res.RowsAffected()
+
+	if err != nil {
+		return -1, err
+	}
+
+	if rowsEff == 0 {
+		return 0, errors.New("you havent registered for this event")
+	}
+	return rowsEff, nil
+
+}
