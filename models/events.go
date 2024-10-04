@@ -23,18 +23,33 @@ func parseTime(dateByte []byte) (time.Time, error) {
 	return time.Parse("2006-01-02 15:04:05", str)
 }
 
-func GetEvents(p ...any) ([]Events, error) {
+func GetEventById(p ...any) (Events, error) {
+	selectQuery := "SELECT * FROM EVENTS WHERE ID = ?"
+    var event Events
+	row := db.DB.QueryRow(selectQuery, p...)
+    var eventDateBytes []byte
+	
+	err := row.Scan(&event.Id, &event.Name, &event.Description, &event.Location, &eventDateBytes, &event.UserId)
+    
+	if err != nil {
+		return Events{}, err
+	}
+	eventDate, err := parseTime(eventDateBytes)
+	if err != nil {
+		eventDate = time.Now()
+	}
+	event.EventDate = eventDate 
+
+	return event, nil
+
+}
+
+func GetEvents() ([]Events, error) {
 	var events = []Events{}
 
 	selectQuery := "select * from events"
 
-	if l := len(p); l > 0 {
-		selectQuery = `
-	        select * from events where id in (?)
-	    `
-	}
-
-	rows, err := db.DB.Query(selectQuery, p...)
+	rows, err := db.DB.Query(selectQuery)
 
 	if err != nil {
 		return []Events{}, err

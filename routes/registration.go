@@ -18,14 +18,14 @@ func regesterEvent(ctx *gin.Context) {
 
 	tokenUserId := ctx.GetInt64("userId")
 
-	uevents, err := models.GetEvents(eventId)
+	uevent, err := models.GetEventById(eventId)
 
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "invalid event id"})
 		return
 	}
 
-	if err = uevents[0].RegisterEvent(tokenUserId); err != nil {
+	if err = uevent.RegisterEvent(tokenUserId); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "internal error...pls try again.."})
 		return 
 	}

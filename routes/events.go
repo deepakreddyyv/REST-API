@@ -17,7 +17,7 @@ func getEvent(ctx *gin.Context) {
 		return
 	}
 
-	events, err := models.GetEvents(id)
+	events, err := models.GetEventById(id)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
@@ -74,9 +74,9 @@ func updateEvents(ctx *gin.Context) {
 	fmt.Println(tokenUserId)
 
 	/* replace it with getEventsById */
-	uevents, err := models.GetEvents(id)
+	uevent, err := models.GetEventById(id)
 
-	if err != nil || tokenUserId != uevents[0].UserId { //if user is unauthorized
+	if err != nil || tokenUserId != uevent.UserId { //if user is unauthorized
 		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "user - unauthorized"})
 		return
 	}
@@ -111,9 +111,9 @@ func deleteEvents(ctx *gin.Context) {
 
 	tokenUserId := ctx.GetInt64("userId")
 	/* replace it with getEventsById */
-	uevents, err := models.GetEvents(id)
+	uevent, err := models.GetEventById(id)
 
-	if err != nil || tokenUserId != uevents[0].UserId { //if user is unauthorized
+	if err != nil || tokenUserId != uevent.UserId { //if user is unauthorized
 		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "user - unauthorized"})
 		return
 	}
