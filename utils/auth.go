@@ -13,8 +13,8 @@ const SECRETKEY = "SUPERSECRET"
 func GenerateJwtToken(u models.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"email": u.Email,
-		"id": u.Id,
-		"exp": time.Now().Add(time.Hour * 2).Unix(),
+		"id":    u.Id,
+		"exp":   time.Now().Add(time.Hour * 2).Unix(),
 	})
 
 	return token.SignedString([]byte(SECRETKEY))
@@ -35,14 +35,13 @@ func Verify(token string) (int64, error) {
 		return 0, errors.New("invalid token")
 	}
 
-
 	claims, ok := signedToken.Claims.(jwt.MapClaims)
 
 	if !ok {
 		return 0, errors.New("invalid claims used")
 	}
 
-	//email := claims["email"] 
+	//email := claims["email"]
 	id := int64(claims["id"].(float64))
 
 	return id, nil

@@ -2,8 +2,6 @@ package models
 
 import (
 	"errors"
-	"fmt"
-
 	"deepak.com/web_rest/db"
 )
 
@@ -14,42 +12,21 @@ type User struct {
 }
 
 func (u *User) Save() error {
-
-	fmt.Println(u)
-	insertQuery := `INSERT INTO USERS(email, password) VALUES(?, ?)`
-
-	stmt, err := db.DB.Prepare(insertQuery)
-
-	if err != nil {
-		return err
-	}
-
-	res, err := stmt.Exec(u.Email, u.Password)
-
-	if err != nil {
-		return err
-	}
-
-	id, _ := res.LastInsertId()
-
-	u.Id = id
-
-	defer stmt.Close()
-	return nil
+	
+    tx := db.DB.Create(&u)
+	return tx.Error
 }
 
 func (u *User) Login() error {
-	retrievPass := "select id, password from users where email = ?"
 
-	row := db.DB.QueryRow(retrievPass, u.Email)
-	var password string
-	err := row.Scan(&u.Id, &password)
-    
+	var password string = u.Password
 
-	if err != nil || !(password == u.Password) {
+	tx := db.DB.Find(&u, "email = ?", u.Email)
+
+	if tx.RowsAffected == 0 || !(password == u.Password) {
 		return errors.New("invalid user credentials")
 	}
-    
-	return nil 
+
+	return tx.Error
 
 }

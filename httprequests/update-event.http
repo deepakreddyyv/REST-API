@@ -1,10 +1,10 @@
-PUT http://127.0.0.1:8080/events/4
+PUT http://127.0.0.1:8080/events/1
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pa2VAZ21haWwuY29tIiwiZXhwIjoxNzI3OTYyNzA2LCJpZCI6Mn0.i0tw8_k56squRfbvCUnxc0klb2Z5BW6YvuGJS3z-hUg
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pa2UxQGdtYWlsLmNvbSIsImV4cCI6MTcyODE0NTc1MSwiaWQiOjF9.dOodvN9AzfECUrPvWbKNQJW3UJrjrVXPuRS2eGz_Eas
 
 {
     "name": "ColdPlay",
     "description": "Coldplay are a British rock band formed in London in 1997",
     "location": "Mumbai, India",
-    "eventDate": "2025-01-12T18:30:00.000Z"
+    "eventDate": "2025-01-13T18:30:00.000Z"
 }

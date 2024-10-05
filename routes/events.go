@@ -46,6 +46,8 @@ func createEvents(ctx *gin.Context) {
 		return
 	}
 
+	fmt.Println(events)
+
 	//events.Id = 1
 	userId := ctx.GetInt64("userId")
 	events.UserId = userId
@@ -75,7 +77,7 @@ func updateEvents(ctx *gin.Context) {
 
 	/* replace it with getEventsById */
 	uevent, err := models.GetEventById(id)
-
+    fmt.Println(uevent)
 	if err != nil || tokenUserId != uevent.UserId { //if user is unauthorized
 		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "user - unauthorized"})
 		return

@@ -1,2 +1,2 @@
-DELETE http://127.0.0.1:8080/events/4/register
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pa2VAZ21haWwuY29tIiwiZXhwIjoxNzI4MDI1NDQ0LCJpZCI6Mn0.QqgiW_3NQ1KeK8FGFDa9rdaYhAI07QT4ZOJ5vsIzJFM
+DELETE http://127.0.0.1:8080/events/2/register
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pa2UxQGdtYWlsLmNvbSIsImV4cCI6MTcyODE0NTc1MSwiaWQiOjF9.dOodvN9AzfECUrPvWbKNQJW3UJrjrVXPuRS2eGz_Eas

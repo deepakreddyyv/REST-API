@@ -26,7 +26,7 @@ func regesterEvent(ctx *gin.Context) {
 	}
 
 	if err = uevent.RegisterEvent(tokenUserId); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "internal error...pls try again.."})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return 
 	}
 
